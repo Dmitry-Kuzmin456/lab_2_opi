@@ -1,0 +1,140 @@
+# Создаем сервер (один раз)
+svnadmin create "$(pwd)/svn_repo"
+REPO_URL="file://$(pwd)/svn_repo"
+svn mkdir -m "init" "$REPO_URL/trunk" "$REPO_URL/branches"
+
+# Красный скачивает trunk
+svn checkout "$REPO_URL/trunk" app_red
+cd app_red
+
+# r0
+unzip -o ../commits/commit0.zip -d .
+svn add *
+svn commit -m "r0" --username red
+
+
+cd ..
+# Создаем ветку на сервере
+svn copy "$REPO_URL/trunk" "$REPO_URL/branches/develop" -m "Create develop"
+
+# Синий скачивает себе develop
+svn checkout "$REPO_URL/branches/develop" app_blue
+cd app_blue
+
+# r1
+unzip -o ../commits/commit1.zip -d .
+svn add --force *
+svn commit -m "r1" --username blue
+
+# r2
+unzip -o ../commits/commit2.zip -d .
+svn add --force *
+svn commit -m "r2" --username blue
+
+# r3
+unzip -o ../commits/commit3.zip -d .
+svn add --force *
+svn commit -m "r3" --username blue
+
+
+cd ../app_red
+# Красный создает ветку feature от develop
+svn copy "$REPO_URL/branches/develop" "$REPO_URL/branches/feature" -m "Create feature"
+# Переключает свою папку на эту ветку
+svn switch "$REPO_URL/branches/feature"
+
+# r4
+unzip -o ../commits/commit4.zip -d .
+svn add --force *
+svn commit -m "r4" --username red
+
+
+cd ../app_blue
+# r5
+unzip -o ../commits/commit5.zip -d .
+svn add --force *
+svn commit -m "r5" --username blue
+
+# r6
+unzip -o ../commits/commit6.zip -d .
+svn add --force *
+svn commit -m "r6" --username blue
+
+cd ../app_red
+# Переключаемся обратно на trunk
+svn switch "$REPO_URL/trunk"
+
+# r7
+unzip -o ../commits/commit7.zip -d .
+svn add --force *
+svn commit -m "r7" --username redcd ../app_red
+# Переключаемся обратно на trunk
+svn switch "$REPO_URL/trunk"
+
+# r7
+unzip -o ../commits/commit7.zip -d .
+svn add --force *
+svn commit -m "r7" --username red
+
+cd ../app_blue
+# r8
+unzip -o ../commits/commit8.zip -d .
+svn add --force *
+svn commit -m "r8" --username blue
+
+
+cd ../app_red
+# Мы уже в trunk. Сначала обновляемся
+svn update
+
+# Вливаем develop в trunk
+svn merge "$REPO_URL/branches/develop"
+
+# Решаем конфликт вручную методом "распаковать архив сверху"
+unzip -o ../commits/commit9.zip -d .
+
+# Сообщаем SVN, что конфликты решены
+svn resolved B.java
+svn resolved F.java
+svn resolved "*"
+
+svn commit -m "r9 merge" --username red
+
+# r10
+unzip -o ../commits/commit10.zip -d .
+svn add --force *
+svn commit -m "r10" --username red
+
+
+# Переключаемся на feature
+svn switch "$REPO_URL/branches/feature"
+
+# r11
+unzip -o ../commits/commit11.zip -d .
+svn add --force *
+svn commit -m "r11" --username red
+
+# r12
+unzip -o ../commits/commit12.zip -d .
+svn add --force *
+svn commit -m "r12" --username red
+
+
+# Возвращаемся в trunk
+svn switch "$REPO_URL/trunk"
+svn update
+
+# Вливаем feature в trunk
+svn merge "$REPO_URL/branches/feature"
+
+# Чиним конфликты архивом
+unzip -o ../commits/commit13.zip -d .
+svn resolved B.java
+svn resolved F.java
+
+svn commit -m "r13 merge" --username red
+
+# r14
+unzip -o ../commits/commit14.zip -d .
+svn add --force *
+svn commit -m "r14" --username red
