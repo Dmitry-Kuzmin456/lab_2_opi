@@ -1,0 +1,115 @@
+1) 
+git init
+git config user.name "red_user"
+git config user.email "red@mail"
+git remote add origin https://github.com/Dmitry-Kuzmin456/opi_lab_2
+
+unzip ../commits/commit0.zip -d .
+git add .
+git commit -m "first commit"
+git push --set-upstream origin main
+
+2) 
+git clone https://github.com/Dmitry-Kuzmin456/opi_lab_2 app_blue
+git config user.name "blue_user"
+git config user.email "blue@mail"
+git checkout -b develop
+
+unzip -o ../commits/commit1.zip -d .
+git add .
+git commit -m "r1"
+git push --set-upstream origin develop
+
+unzip -o ../commits/commit2.zip -d .
+git add .
+git commit -m "r2"
+git push
+
+unzip -o ../commits/commit3.zip -d .
+rm DGL609Kely.B7s
+git add .
+git commit -m "r3"
+git push
+
+1)
+git fetch
+git checkout develop
+git checkout -b feature
+unzip -o ../commits/commit4.zip -d .
+rm CLtKj0iUy0.XzG
+git add .
+git commit -m "r4"
+git push --set-upstream origin feature
+
+2) 
+unzip -o ../commits/commit5.zip -d .
+rm CLtKj0iUy0.XzG
+git add .
+git commit -m "r5"
+git push
+
+unzip -o ../commits/commit6.zip -d .
+rm CesATB7sDG.aSb
+git add .
+git commit -m "r6"
+git push
+
+1)
+git checkout main
+unzip -o ../commits/commit7.zip -d .
+git add .
+git commit -m "r7"
+git push
+
+2) 
+unzip -o ../commits/commit8.zip -d .
+rm "*"
+git add .
+git commit -m "r8"
+git push
+
+1) 
+git checkout develop
+git pull
+git checkout main
+git merge develop
+--Тут мы как будто вручную решаем конфликт
+--В файлах .java можно открыть и разрешить, но в бинарных нет
+-- Можно было бы сделать git checkout --ours (или --theirs) <filepath>, но тут нам дано конечно состояние, берем его
+unzip -o ../commits/commit9.zip -d .   
+rm 7sDGL609Ke.ATB
+git add .
+git commit -m "r9 merge"
+
+unzip -o ../commits/commit10.zip -d .   
+git add .
+git commit -m "r10"
+git push
+
+git checkout feature
+
+unzip -o ../commits/commit11.zip -d .   
+rm PEdAP8QFji.ej0
+git add .
+git commit -m "r11"
+git push
+
+unzip -o ../commits/commit12.zip -d .   
+git add .
+git commit -m "r12"
+git push
+
+git checkout main
+git merge
+unzip -o ../commits/commit13.zip -d .
+git add .
+git commit -m "r13 merge"
+git push
+
+unzip -o ../commits/commit14.zip -d .   
+git add .
+git commit -m "r14"
+git push
+
+
+
